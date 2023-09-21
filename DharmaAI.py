@@ -127,7 +127,10 @@ def main():
             # message_history.add_ai_message(res)
             res=ask(query)
             # st.session_state.message_hist.append(res)
-            st.write(res)
+            if res=="None":
+                query=st.text_input(value="Could you elaborate on that?")
+            else:
+                st.write(res)
 
 if __name__=='__main__':
     main()
