@@ -40,6 +40,8 @@ url=os.getenv("redis_url"), ttl=600, session_id="username"
 
 #     return contents
 
+
+
 def main():
     search=SerpAPIWrapper()
     tools = [
@@ -80,6 +82,16 @@ def main():
     agent_chain = AgentExecutor.from_agent_and_tools(
         agent=agent, tools=tools, verbose=True, memory=memory
     )
+    def ask(input: str) -> str:
+        print("-- Serving request for input: %s" % input)
+        try:
+            response= agent_chain.run(input)
+        except Exception as e:
+            response = str(e)
+            if response.startswith("Could not parse LLM output: `"):
+                response = response.removeprefix("Could not parse LLM output: `").removesuffix("`")
+        return response
+
     st.write("Hi I'm DharmaAI bot. How may I help you today?")
     query=st.text_input(" ",placeholder="Type here",max_chars=1000)
     if query:
@@ -113,7 +125,7 @@ def main():
         else:
             # message_history.clear()
             # message_history.add_ai_message(res)
-            res=agent_chain.run(input=query)
+            res=ask(query)
             # st.session_state.message_hist.append(res)
             st.write(res)
 
