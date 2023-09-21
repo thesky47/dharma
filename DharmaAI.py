@@ -51,12 +51,13 @@ def main():
     # Tool(name="human",func=get_input(),description="Useful when asked questions with little context")
     ]
 
-    prefix = """You are a legal bot called DharmaAI who answers Indian legal questions by asking follow up questions, answering the following question accurately. if you dont know the answer ask follow up questions till you know the answer. You have access to the following tools:"""
+    prefix = """You are a legal bot called DharmaAI who answers Indian legal questions, answering the following question accurately. if you dont know the answer return your thoughts to the user in a question form. You have access to the following tools:"""
     suffix = """Begin!"
 
     {chat_history}
     Question: {input}
-    {agent_scratchpad}"""
+    {agent_scratchpad}
+    """
 
     prompt = ZeroShotAgent.create_prompt(
         tools,
@@ -103,7 +104,7 @@ def main():
             message_history.add_user_message(query)
             message_history.add_ai_message("How was your experience with us?")
             # st.session_state.message_hist.append("How was your experience with us?")
-            st.write("How was your experience with us?")
+            st.write("Thanks for talking to us. How was your experience?")
 
             message_history.clear()
             # st.session_state.message_hist=""
