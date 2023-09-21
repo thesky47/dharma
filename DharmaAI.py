@@ -13,12 +13,12 @@ from langchain.utilities import SerpAPIWrapper
 # from langchain.agents import AgentType
 # from langchain.chat_models import HumanInputChatModel
 load_dotenv()
-openai.api_key=os.getenv("OPENAI_API_KEY")
-serpapikey=os.getenv("SERPAPI_API_KEY")
+openai.api_key=st.secrets["OPENAI_API_KEY"]
+serpapikey=st.secrets["SERPAPI_API_KEY"]
 llm = ChatOpenAI(temperature=0)
 llm2=OpenAI(temperature=0)
 message_history = RedisChatMessageHistory(
-url=os.getenv("redis_url"), ttl=600, session_id="username"
+url=st.secrets["redis_url"], ttl=600, session_id="username"
 )
 # st.session_state["message_hist"]="Hi I'm DharmaAI bot. How may I help you today?"
 
