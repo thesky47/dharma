@@ -128,7 +128,7 @@ def main():
             res=ask(query)
             # st.session_state.message_hist.append(res)
             if res=="None":
-                query=st.text_input(value="Could you elaborate on that?")
+                query=st.text_input("Could you elaborate on that?",placeholder="Type here",max_chars=1000)
             else:
                 st.write(res)
 
