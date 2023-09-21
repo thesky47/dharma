@@ -6,3 +6,4 @@ streamlit-extras
 openai
 tiktoken
 redis
+google-search-results
