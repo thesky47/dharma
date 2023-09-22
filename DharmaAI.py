@@ -40,8 +40,6 @@ url=st.secrets["redis_url"], ttl=600, session_id="username"
 
 #     return contents
 
-
-
 def main():
     search=SerpAPIWrapper()
     tools = [
