@@ -20,6 +20,7 @@ llm2=OpenAI(temperature=0)
 message_history = RedisChatMessageHistory(
 url=st.secrets["redis_url"], ttl=600, session_id="username"
 )
+tmp=None
 # st.session_state["message_hist"]="Hi I'm DharmaAI bot. How may I help you today?"
 
 
