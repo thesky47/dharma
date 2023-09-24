@@ -92,6 +92,8 @@ def main():
                 response = response.removeprefix("Could not parse LLM output: `").removesuffix("`")
         return response
 
+    tmp=None
+
     st.write("Hi I'm DharmaAI bot. How may I help you today?")
     query=st.text_input(" ",placeholder="Type here",max_chars=1000)
     if query:
