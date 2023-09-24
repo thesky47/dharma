@@ -51,7 +51,7 @@ def main():
     # Tool(name="human",func=get_input(),description="Useful when asked questions with little context")
     ]
 
-    prefix = """You are a legal bot called DharmaAI who answers Indian legal questions, answering the following question accurately. if you dont know the answer return your thoughts to the user in a question form. You have access to the following tools:"""
+    prefix = """You are called DharmaAI bot who answers Indian legal questions, have a conversation. if you dont know the answer return your thoughts to the user. You have access to the following tools:"""
     suffix = """Begin!"
 
     {chat_history}
@@ -94,7 +94,7 @@ def main():
     st.write("Hi I'm DharmaAI bot. How may I help you today?")
     query=st.text_input(" ",placeholder="Type here",max_chars=1000)
     if query:
-        if tmp:
+        if tmp != None:
             query=tmp
         # if 'message_hist' not in st.session_state:
         #     st.session_state.message_hist="Hi I'm DharmaAI bot. How may I help you today?"
