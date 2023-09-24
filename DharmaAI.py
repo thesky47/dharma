@@ -94,9 +94,10 @@ def main():
     st.write("Hi I'm DharmaAI bot. How may I help you today?")
     query=st.text_input(" ",placeholder="Type here",max_chars=1000)
     if query:
+        if tmp:
+            query=tmp
         # if 'message_hist' not in st.session_state:
         #     st.session_state.message_hist="Hi I'm DharmaAI bot. How may I help you today?"
-
         # st.session_state.message_hist.append(query)
         # st.write(st.session_state.message_hist)
         if "help" in query.lower():
@@ -105,21 +106,31 @@ def main():
             message_history.add_ai_message("May I book a consultation for you with our top consultants?")
             st.write("May I book a consultation for you with our top consultants?")
 
-        elif ("agent" or "talk to agent" or "connect me") in query.lower():
+        elif ("agent" or "talk to agent" or "connect me") in query.strip().lower():
             message_history.add_user_message(query)
             message_history.add_ai_message("I will shortly connect you to a live agent")
             # st.session_state.message_hist.append("I will shortly connect you to a live agent")
             st.write("I will shortly connect you to a live agent")
 
-        elif ("bye" or "goodbye" or "thanks") in query.lower():
+        elif "bye" in query.strip().lower():
             message_history.add_user_message(query)
-            message_history.add_ai_message("How was your experience with us?")
+            message_history.add_ai_message("Thanks for talking to us. How was your experience?")
             # st.session_state.message_hist.append("How was your experience with us?")
             st.write("Thanks for talking to us. How was your experience?")
 
             message_history.clear()
             # st.session_state.message_hist=""
             # st.write(st.session_state.message_hist)
+        elif "thank" in query.strip().lower():
+            message_history.add_user_message(query)
+            message_history.add_ai_message("Thanks for talking to us. How was your experience?")
+            # st.session_state.message_hist.append("How was your experience with us?")
+            st.write("Thanks for talking to us. How was your experience?")
+
+            message_history.clear()
+            # st.session_state.message_hist=""
+            # st.write(st.session_state.message_hist)
+            
 
         else:
             # message_history.clear()
@@ -130,7 +141,7 @@ def main():
                 ind=res.index("Question:")
                 query=st.text_input(res[ind:],placeholder="Type here",max_chars=1000)
             elif res=='None':
-                query=st.text_input("What issue are you facing with this?",placeholder="Type here",max_chars=1000)
+                tmp=st.text_input("What issue are you facing with this?",placeholder="Type here",max_chars=1000)
             else:
                 st.write(res)
 
