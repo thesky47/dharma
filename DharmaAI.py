@@ -80,6 +80,7 @@ def main():
     agent_chain = AgentExecutor.from_agent_and_tools(
         agent=agent, tools=tools, verbose=True, memory=memory
     )
+
     def ask(input: str) -> str:
         print("-- Serving request for input: %s" % input)
         try:
@@ -125,7 +126,7 @@ def main():
             # message_history.add_ai_message(res)
             res=ask(query)
             # st.session_state.message_hist.append(res)
-            if res=="None":
+            if "None" in res:
                 query=st.text_input("Could you elaborate on that?",placeholder="Type here",max_chars=1000)
             else:
                 st.write(res)
