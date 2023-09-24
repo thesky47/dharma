@@ -129,6 +129,8 @@ def main():
             if "Question:" in res:
                 ind=res.index("Question:")
                 query=st.text_input(res[ind:],placeholder="Type here",max_chars=1000)
+            elif res=='None':
+                query=st.text_input("What issue are you facing with this?",placeholder="Type here",max_chars=1000)
             else:
                 st.write(res)
 
