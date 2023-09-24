@@ -126,8 +126,9 @@ def main():
             # message_history.add_ai_message(res)
             res=ask(query)
             # st.session_state.message_hist.append(res)
-            if "None" in res:
-                query=st.text_input("Could you elaborate on that?",placeholder="Type here",max_chars=1000)
+            if "Question:" in res:
+                ind=res.index("Question:")
+                query=st.text_input(res[ind:],placeholder="Type here",max_chars=1000)
             else:
                 st.write(res)
 
