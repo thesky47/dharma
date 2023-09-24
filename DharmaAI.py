@@ -52,7 +52,7 @@ def main():
     # Tool(name="human",func=get_input(),description="Useful when asked questions with little context")
     ]
 
-    prefix = """You are called DharmaAI bot who answers Indian legal questions, have a conversation. if you dont know the answer return your thoughts to the user. You have access to the following tools:"""
+    prefix = """You are a friendly conversational bot who can answer Indian legal questions. if you dont know the answer return your thoughts to the user. You have access to the following tools:"""
     suffix = """Begin!"
 
     {chat_history}
@@ -148,7 +148,7 @@ def main():
                 tmp=st.text_input(res[ind:],placeholder="Type here",max_chars=1000)
                 message_history.add_ai_message(res[ind:])
                 message_history.add_user_message(tmp)
-            elif res=='None':
+            elif ((res=='None') or ("None:" in res)):
                 tmp=st.text_input("What issue are you facing with this?",placeholder="Type here",max_chars=1000)
                 message_history.add_ai_message("What issue are you facing with this?")
                 message_history.add_user_message(tmp)
