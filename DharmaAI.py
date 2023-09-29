@@ -10,16 +10,24 @@ from dotenv import load_dotenv
 import os
 from langchain.utilities import SerpAPIWrapper
 import requests
+import random
+import string
+
+def generate_random_string(length):
+    # Define the characters to choose from for the random string
+    characters = string.ascii_letters
+    return ''.join(random.choice(characters) for _ in range(length))
 
 load_dotenv()
 openai.api_key=st.secrets["OPENAI_API_KEY"]
 serpapikey=st.secrets["SERPAPI_API_KEY"]
 
+
 llm = ChatOpenAI(temperature=0)
 llm2=OpenAI(temperature=0)
 message_history = RedisChatMessageHistory(
     url=st.secrets["REDIS_URL"],
-    ttl=600, session_id="username"
+    ttl=600, session_id=generate_random_string(6)
     )
 
 
