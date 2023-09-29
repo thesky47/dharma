@@ -1,7 +1,7 @@
 import streamlit as st
 from langchain.chat_models import ChatOpenAI
 from langchain.agents import ZeroShotAgent, Tool, AgentExecutor, load_tools, initialize_agent, AgentType
-from langchain.memory import ConversationBufferWindowMemory
+from langchain.memory import ConversationBufferWindowMemory, ChatMessageHistory
 from langchain.memory.chat_message_histories import RedisChatMessageHistory
 from langchain import OpenAI, LLMChain
 import openai
@@ -16,7 +16,7 @@ serpapikey=st.secrets["SERPAPI_API_KEY"]
 # calendlyapi=st.secrets["calendly_api"]
 llm = ChatOpenAI(temperature=0)
 llm2=OpenAI(temperature=0)
-message_history = RedisChatMessageHistory(ttl=600, session_id="username")
+message_history = ChatMessageHistory() #RedisChatMessageHistory(ttl=600, session_id="username")
 
 
 def main():
