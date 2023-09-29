@@ -3,7 +3,8 @@ from langchain.chat_models import ChatOpenAI
 from langchain.agents import ZeroShotAgent, Tool, AgentExecutor, load_tools, initialize_agent, AgentType
 from langchain.memory import ConversationBufferWindowMemory
 from langchain.memory.chat_message_histories import RedisChatMessageHistory
-from langchain import OpenAI, LLMChain
+from langchain.llms import OpenAI
+from langchain.chains import LLMChain
 import openai
 from dotenv import load_dotenv
 import os
@@ -13,10 +14,13 @@ import requests
 load_dotenv()
 openai.api_key=st.secrets["OPENAI_API_KEY"]
 serpapikey=st.secrets["SERPAPI_API_KEY"]
-# calendlyapi=st.secrets["calendly_api"]
+
 llm = ChatOpenAI(temperature=0)
 llm2=OpenAI(temperature=0)
-message_history = RedisChatMessageHistory(ttl=600, session_id="username")
+message_history = RedisChatMessageHistory(
+    url=st.secrets["REDIS_URL"],
+    ttl=600, session_id="username"
+    )
 
 
 def main():
@@ -117,7 +121,7 @@ def main():
         st.write(res)
         message_history.add_user_message(query)
         message_history.add_ai_message(res)
-
+        print(message_history.messages)
 
 
 def ask(agent_chain, query):
