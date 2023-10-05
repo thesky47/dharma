@@ -2,21 +2,13 @@ import streamlit as st
 from langchain.chat_models import ChatOpenAI
 from langchain.agents import ZeroShotAgent, Tool, AgentExecutor, load_tools, initialize_agent, AgentType
 from langchain.memory import ConversationBufferWindowMemory
-from langchain.memory.chat_message_histories import RedisChatMessageHistory
 from langchain.llms import OpenAI
 from langchain.chains import LLMChain
 import openai
 from dotenv import load_dotenv
 import os
 from langchain.utilities import SerpAPIWrapper
-import requests
-import random
-import string
-
-def generate_random_string(length):
-    # Define the characters to choose from for the random string
-    characters = string.ascii_letters
-    return ''.join(random.choice(characters) for _ in range(length))
+from langchain.memory import StreamlitChatMessageHistory
 
 load_dotenv()
 openai.api_key=st.secrets["OPENAI_API_KEY"]
@@ -25,10 +17,8 @@ serpapikey=st.secrets["SERPAPI_API_KEY"]
 
 llm = ChatOpenAI(temperature=0)
 llm2=OpenAI(temperature=0)
-message_history = RedisChatMessageHistory(
-    url=st.secrets["REDIS_URL"],
-    ttl=600, session_id=generate_random_string(6)
-    )
+message_history =  StreamlitChatMessageHistory(key="chat_messages") 
+
 
 
 def main():
@@ -94,7 +84,10 @@ def main():
     ... (this Thought/Action/Action Input/Observation can repeat N times)
     Thought: I now know the final answer
     Final Answer: the final answer to the original input question
-    The Final Answer must come in JSON format.
+
+    The Final Answer must come in JSON format with the following keys: 
+    answer: <answer to the question asked by user>
+    stage: <stage at which conversation currently is>.
     ```
     Here is chat history:
     {chat_history}
@@ -122,15 +115,28 @@ def main():
         agent=agent, tools=tools, verbose=True, memory=memory
     )
 
+    for message in memory.buffer_as_messages:
 
+        if message.type  == "ai":  
+            with st.chat_message("Assistant"):
+                st.write(message.content)
 
-    if query:=st.text_input(label="Question", placeholder="Hi I am dharmaAI, ask you legal queries"):
-        res = ask(agent_chain, query)
-        st.write(res)
+        if message.type == "human":  
+            with st.chat_message("User"):
+                st.write(message.content)
+    
+
+    if query:=st.chat_input(placeholder="Hi I am dharmaAI, ask you legal queries"):
         message_history.add_user_message(query)
-        message_history.add_ai_message(res)
-        print(message_history.messages)
-
+        with st.chat_message("User"):
+            st.write(query)
+   
+        with st.chat_message("assistant"):
+            with st.spinner("Thinking..."):
+                res = ask(agent_chain, query)
+                message_history.add_ai_message(res)
+                st.write(res) 
+    
 
 def ask(agent_chain, query):
     try:
