@@ -7,17 +7,10 @@ import prompts as pmt
 from bot import LegalBot
 import time
 
+openai.api_key=st.secrets["OPENAI_API_KEY"]
+message_history =  StreamlitChatMessageHistory(key="chat_messages") 
+legal_bot = LegalBot(message_history=message_history)
 
-
-@st.cache_resource
-def load_resource():
-    load_dotenv()
-    openai.api_key=st.secrets["OPENAI_API_KEY"]
-    message_history =  StreamlitChatMessageHistory(key="chat_messages") 
-    legal_bot = LegalBot(message_history=message_history)
-    return legal_bot, message_history
-
-legal_bot, message_history = load_resource()
 
 def main():  # sourcery skip: use-named-expression
     if message_history.messages == []:
@@ -38,13 +31,13 @@ def main():  # sourcery skip: use-named-expression
         
         with st.chat_message("User"):
             st.write(query)
+            message_history.add_user_message(query)
    
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
                 response = legal_bot.generate_response(question=query) #ask(agent_chain, query)
                 res = response[0]
                 end_time = time.time()
-                message_history.add_user_message(query)
                 message_history.add_ai_message(res)
                 stage = response[1][1].strip(' \'"')    
                 st.write(res) 

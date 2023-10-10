@@ -91,7 +91,7 @@ class LegalBot:
             input_variables=["input", "chat_history", "agent_scratchpad"],  
         )
 
-        llm_chain = LLMChain(llm=self.llm, prompt=prompt)
+        llm_chain = LLMChain(llm=self.llm, prompt=prompt, verbose=True)
         agent = ZeroShotAgent(llm_chain=llm_chain, tools=self.tools)
         agent_chain = AgentExecutor.from_agent_and_tools(
             agent=agent, tools=self.tools, verbose=True, memory=self.memory
