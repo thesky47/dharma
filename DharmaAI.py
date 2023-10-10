@@ -1,9 +1,6 @@
 import streamlit as st
 import openai
-from dotenv import load_dotenv
 from langchain.memory import StreamlitChatMessageHistory
-from langchain.memory import ConversationBufferWindowMemory
-import prompts as pmt
 from bot import LegalBot
 import time
 
